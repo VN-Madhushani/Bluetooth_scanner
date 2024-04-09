@@ -5,10 +5,24 @@ import 'package:getting_started/constants/colors.dart';
 import 'package:getting_started/models/todo.dart';
 import 'package:getting_started/widgets/todo_item.dart';
 
-class Home extends StatelessWidget {
-  Home({Key? key}) : super(key:key);
+class Home extends StatefulWidget {
+  Home({Key? key}) : super(key: key);
 
+  @override
+  State<Home> createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
   final todoList = ToDo.todoList();
+  List<ToDo> _foundToDo = [];
+  final _todoController = TextEditingController();
+
+  @override
+  void initState() {
+    _foundToDo = todoList;
+    // TODO: implement initState
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,18 +43,20 @@ class Home extends StatelessWidget {
                   child: ListView(
                     children: [
                       Container(
-                        margin: EdgeInsets.only(top: 50,bottom: 20),
+                        margin: EdgeInsets.only(top: 50, bottom: 20),
                         child: Text(
                           'All To Dos',
                           style: TextStyle(
-                              fontSize: 30,
-                              fontWeight: FontWeight.w500),
+                              fontSize: 30, fontWeight: FontWeight.w500),
                         ),
                       ),
-                      for (ToDo todoo in todoList)
-                        ToDoItem(todo:todoo,),
-
-
+                      for (ToDo todoo in _foundToDo.reversed)
+                        ToDoItem(
+                          todo: todoo,
+                          onToDoChanged: _handleChange,
+                          onDeleteItem: _deleteItem,
+                          onLongPress: (),
+                        ),
                     ],
                   ),
                 ),
@@ -49,39 +65,111 @@ class Home extends StatelessWidget {
           ),
           Align(
             alignment: Alignment.bottomCenter,
-            child: Row(children: [
-              Expanded(
-                child: Container(
+            child: Row(
+              children: [
+                Expanded(
+                  child: Container(
+                    margin: EdgeInsets.only(
+                      bottom: 20,
+                      right: 20,
+                      left: 20,
+                    ),
+                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Colors.grey,
+                          offset: Offset(0.0, 0.0),
+                          blurRadius: 10.0,
+                          spreadRadius: 0.0,
+                        ),
+                      ],
+                      borderRadius: BorderRadius.circular(10),
+                      // ),
+                    ),
+                    child: TextField(
+                      controller: _todoController,
+                      decoration: InputDecoration(
+                          hintText: 'Add a new todo item',
+                          border: InputBorder.none),
+                    ),
+                  ),
+                ),
+                Container(
                   margin: EdgeInsets.only(
                     bottom: 20,
                     right: 20,
-                    left: 20,
                   ),
-                  // decoration: BoxDecoration(
-                  //   color: Colors.white,
-                  //   boxShadow: const BoxShadow(
-                  //     color: Colors.grey,
-                  //     offset: Offset(0.0,0.0),
-                  //     blurRadius: 10.0,
-                  //     spreadRadius: 0.0,
-                  //   ),
-                  // ),
+                  child: ElevatedButton(
+                    child: Text(
+                      '+',
+                      style: TextStyle(
+                        fontSize: 40,
+                      ),
+                    ),
+                    onPressed: () {
+                      _addToDoItem(_todoController.text);
+                    },
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: tdBlue,
+                      minimumSize: Size(60, 60),
+                      elevation: 10,
+                    ),
+                  ),
                 ),
-              ),
-            ],),
-          )
+              ],
+            ),
+          ),
         ],
       ),
     );
   }
 
+  void _handleChange(ToDo todo) {
+    setState(() {
+      todo.isdone = !todo.isdone;
+    });
+  }
+
+  void _deleteItem(String id) {
+    setState(() {
+      todoList.removeWhere((item) => item.id == id);
+    });
+  }
+
+  void _addToDoItem(String toDo) {
+    setState(() {
+      todoList.add(ToDo(
+        id: DateTime.now().millisecondsSinceEpoch.toString(),
+        todoText: toDo,
+      ));
+    });
+    _todoController.clear();
+  }
+
+  void _runFilter(String enterKeyword) {
+    List<ToDo> results = [];
+    if (enterKeyword.isEmpty) {
+      results = todoList;
+    } else {
+      results = todoList
+          .where((item) =>
+              item.todoText!.toLowerCase().contains(enterKeyword.toLowerCase()))
+          .toList();
+    }
+    setState(() {
+      _foundToDo = results;
+    });
+  }
+
   Widget searchBox() {
     return Container(
-      padding:EdgeInsets.symmetric(horizontal: 15) ,
+      padding: EdgeInsets.symmetric(horizontal: 15),
       decoration: BoxDecoration(
-          color: Colors.white,borderRadius:BorderRadius.circular(20)
-      ),
-      child:TextField(
+          color: Colors.white, borderRadius: BorderRadius.circular(20)),
+      child: TextField(
+        onChanged: (value) => _runFilter(value),
         decoration: InputDecoration(
           contentPadding: EdgeInsets.all(0),
           prefixIcon: Icon(
@@ -115,10 +203,10 @@ class Home extends StatelessWidget {
             size: 30,
           ),
           Container(
-            height: 40,
-            width: 40,
+            height: 50,
+            width: 60,
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(15),
               child: Image(
                 image: AssetImage("images/face.jpg"),
               ),
