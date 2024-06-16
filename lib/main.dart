@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:getting_started/Screens/home.dart';
+import 'package:get/get.dart';
+import 'package:getting_started/controllers/bluetooth_controller.dart';
+//import 'package:getting_started/Screens/home.dart';
+//import 'package:getting_started/controllers/app_binding.dart';
+//import 'package:getting_started/controllers/todo_controller.dart';
 import 'package:getting_started/screens/firstpg.dart';
 
 void main() {
@@ -15,9 +19,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(
         SystemUiOverlayStyle(statusBarColor: Colors.transparent));
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,  //to get rid of debug at top
-      title: 'To DO List',
+
+    //BluetoothController bluetoothcontroller = Get.put(BluetoothController());
+
+    return GetMaterialApp(
+      debugShowCheckedModeBanner: false, //to get rid of debug at top
+      title: 'BLE Scanner',
+      // initialBinding: AppBinding(),
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -38,8 +46,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       //home: Home(),
-      home:Firstpg(),
+      home: Firstpg(),
     );
   }
 }
-
