@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:getting_started/controllers/bluetooth_controller.dart';
+//import 'package:getting_started/controllers/bluetooth_controller.dart';
 //import 'package:getting_started/Screens/home.dart';
 //import 'package:getting_started/controllers/app_binding.dart';
 //import 'package:getting_started/controllers/todo_controller.dart';
-import 'package:getting_started/screens/firstpg.dart';
+import 'package:getting_started/screens/auth.dart';
 
 void main() {
   runApp(const MyApp());
@@ -46,7 +46,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       //home: Home(),
-      home: Firstpg(),
+      home: AuthScreen(),
     );
   }
 }

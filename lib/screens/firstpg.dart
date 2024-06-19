@@ -3,6 +3,8 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:get/get.dart';
 import 'package:getting_started/controllers/bluetooth_controller.dart';
+import 'package:getting_started/constants/colors.dart';
+import 'package:getting_started/widgets/device_list_item.dart';
 //import 'package:getting_started/controllers/todo_controller.dart';
 //import 'package:getting_started/models/todo.dart';
 //import 'package:getting_started/screens/home.dart';
@@ -18,49 +20,38 @@ class Firstpg extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text("BLE SCANNER"),
-        ),
+        // appBar: AppBar(
+        //   title: Text("BLE SCANNER"),
+        // ),
         body: GetBuilder<BluetoothController>(
             init: BluetoothController(),
             builder: (controller) {
               return SingleChildScrollView(
                 child: Column(
                   children: [
-                    Container(
-                      height: 50,
-                      width: double.infinity,
-                      color: Color.fromARGB(255, 137, 109, 230),
-                      child: const Center(
-                        child: Text(
-                          "Bluetooth Scanner",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 25,
-                          ),
-                        ),
-                      ),
-                    ),
                     const SizedBox(height: 20),
-                    Center(
-                      child: ElevatedButton(
-                        //onPressed: () {},
-                        //onPressed: () => controller.scanDevices(),
-                        onPressed: () async {
-                          controller.scanDevices();
-                        },
-                        style: ElevatedButton.styleFrom(
-                          foregroundColor: Colors.white,
-                          backgroundColor: Colors.blue,
-                          minimumSize: const Size(350, 55),
-                          shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(5)),
+                    Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: Center(
+                        child: ElevatedButton(
+                          //onPressed: () {},
+                          //onPressed: () => controller.scanDevices(),
+                          onPressed: () async {
+                            controller.scanDevices();
+                          },
+                          style: ElevatedButton.styleFrom(
+                            foregroundColor: Colors.white,
+                            backgroundColor: backgroundCOlor,
+                            minimumSize: const Size(350, 55),
+                            shape: const RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(5)),
+                            ),
                           ),
-                        ),
-                        child: const Text(
-                          "Scan",
-                          style: TextStyle(fontSize: 18),
+                          child: const Text(
+                            "Scan",
+                            style: TextStyle(fontSize: 18),
+                          ),
                         ),
                       ),
                     ),
@@ -74,15 +65,35 @@ class Firstpg extends StatelessWidget {
                                 itemCount: snapshot.data!.length,
                                 itemBuilder: (context, index) {
                                   final data = snapshot.data![index];
-                                  return Card(
-                                    elevation: 2,
-                                    child: ListTile(
-                                      // ignore: deprecated_member_use
-                                      title: Text(data.device.name),
-                                      // ignore: deprecated_member_use
-                                      subtitle: Text(data.device.id.id),
-                                      trailing: Text(data.rssi.toString()),
-                                    ),
+
+                                  // print('Device Name: ${data.device.name}');
+                                  // print('Device ID: ${data.device.id.id}');
+                                  // print('RSSI: ${data.rssi}');
+
+                                  // return Card(
+                                  //   elevation: 2,
+                                  //   child: ListTile(
+                                  //     // ignore: deprecated_member_use
+                                  //     title: Text(data.device.name),
+                                  //     //print(data.device.name);
+                                  //     // ignore: deprecated_member_use
+                                  //     subtitle: Text(data.device.id.id),
+                                  //     trailing: Text(data.rssi.toString()),
+                                  //   ),
+                                  // );
+
+                                  return DeviceListItem(
+                                    device: data,
+                                    onSettingsPressed: (device) {
+                                      // Handle settings icon pressed
+                                      print(
+                                          'Settings pressed for: ${device.device.name.isNotEmpty ? device.device.name : 'Unknown Device'}');
+                                    },
+                                    onConnectPressed: (device) async {
+                                      print(
+                                          'Connect pressed for: ${device.name.isNotEmpty ? device.name : 'Unknown Device'}');
+                                      await controller.connectToDevice(device);
+                                    },
                                   );
                                 });
                           } else {
