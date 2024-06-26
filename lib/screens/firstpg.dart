@@ -14,6 +14,8 @@ import 'package:getting_started/widgets/device_list_item.dart';
 class Firstpg extends StatelessWidget {
   Firstpg({Key? key}) : super(key: key);
 
+  //bool isFinished = false;
+
   //ToDOController controller = Get.find();
   //final ToDOController c = Get.find();
 

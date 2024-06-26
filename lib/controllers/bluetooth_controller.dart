@@ -1,5 +1,6 @@
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:get/get.dart';
+import 'package:getting_started/screens/firstpg.dart';
 import 'package:getting_started/utils/utils.dart';
 import 'package:getting_started/widgets/devicehome.dart';
 import 'package:getting_started/models/common_data_response.dart';
@@ -11,6 +12,105 @@ class BluetoothController extends GetxController {
 
   //isScanning is a  reactive variable,boolean false is converted to an observable
   RxBool isScanning = false.obs;
+  RxBool isBluetoothOn = false.obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+    checkBluetoothState();
+
+    FlutterBluePlus.adapterState.listen((BluetoothAdapterState state) {
+      if (state == BluetoothAdapterState.on) {
+        isBluetoothOn.value = true;
+        Get.to(() => Firstpg());
+      } else {
+        isBluetoothOn.value = false;
+      }
+    });
+  }
+
+  Future<void> checkBluetoothState() async {
+    try {
+      if (await FlutterBluePlus.isSupported == false) {
+        print("Bluetooth not supported by this device");
+        return;
+      }
+
+      var subscription =
+          FlutterBluePlus.adapterState.listen((BluetoothAdapterState state) {
+        print(state);
+        if (state == BluetoothAdapterState.on) {
+          // usually start scanning, connecting, etc
+          //Get.to(() => Firstpg());
+        } else {
+          // show an error to the user, etc
+          print("Bluetooth is not on");
+        }
+      });
+
+      bool isOn = await FlutterBluePlus.isOn;
+      isBluetoothOn.value = isOn;
+
+      print("BLE status:**********");
+      print(isOn);
+      subscription.cancel();
+    } catch (e) {
+      print("Error checking ble state:$e");
+    }
+  }
+
+  // Future<void> turnOnBluetooth() async {
+  //   try {
+  //     // Note: Turning Bluetooth on/off might require platform-specific code.
+  //     //await flutterBlue.turnOn();
+  //     isBluetoothOn.value = true;
+  //     print('Bluetooth turned on');
+  //     Get.to(() => Firstpg());
+  //   } catch (e) {
+  //     print('Error turning on Bluetooth: $e');
+  //   }
+  // }
+
+  // Future<void> turnOffBluetooth() async {
+  //   try {
+  //     // Note: Turning Bluetooth on/off might require platform-specific code.
+  //     isBluetoothOn.value = false;
+  //     print('Bluetooth turned off');
+  //   } catch (e) {
+  //     print('Error turning off Bluetooth: $e');
+  //   }
+  // }
+
+  // Future<void> checkBluetoothState() async {
+  //   bool isOn = await FlutterBluePlus.isOn;
+  //   isBluetoothOn.value = isOn;
+  // }
+
+  // void turnOnBluetooth() {
+  //   isBluetoothOn.value = true;
+  // }
+
+  // void turnOffBluetooth() {
+  //   isBluetoothOn.value = false;
+  // }
+
+  // Future<void> turnOn({int timeout = 60}) async {
+  //   try {
+  //     await flutterBlue.turnOn(); // This might need platform-specific code to actually work
+  //     isBluetoothOn.value = true;
+  //   } catch (e) {
+  //     print('Error turning on Bluetooth: $e');
+  //   }
+  // }
+
+  // Future<void> turnOffBluetooth() async {
+  //   try {
+  //     await flutterBlue.turnOff(); // This might need platform-specific code to actually work
+  //     isBluetoothOn.value = false;
+  //   } catch (e) {
+  //     print('Error turning off Bluetooth: $e');
+  //   }
+  // }
 
   Future scanDevices() async {
     print(isScanning.value);

@@ -6,8 +6,10 @@ import 'package:get/get.dart';
 //import 'package:getting_started/controllers/app_binding.dart';
 //import 'package:getting_started/controllers/todo_controller.dart';
 import 'package:getting_started/screens/auth.dart';
+import 'package:getting_started/controllers/bluetooth_controller.dart';
 
 void main() {
+  Get.put(BluetoothController());
   runApp(const MyApp());
 }
 
