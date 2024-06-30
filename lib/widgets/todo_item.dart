@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:getting_started/constants/colors.dart';
-import 'package:getting_started/screens/detailspg.dart';
+import 'package:ble_Scanner/constants/colors.dart';
+import 'package:ble_Scanner/screens/detailspg.dart';
 
 import '../models/todo.dart';
 

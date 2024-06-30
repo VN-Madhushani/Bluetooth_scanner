@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
-import 'package:getting_started/constants/button.dart';
+import 'package:ble_Scanner/constants/button.dart';
 
 class DeviceListItem extends StatelessWidget {
   final ScanResult device;
-  final Function(ScanResult) onSettingsPressed;
   final Function(BluetoothDevice) onConnectPressed;
+  //final bool isConnected;
 
   const DeviceListItem({
     Key? key,
     required this.device,
-    required this.onSettingsPressed,
     required this.onConnectPressed,
+    //required this.isConnected,
   }) : super(key: key);
 
   @override
@@ -23,10 +23,7 @@ class DeviceListItem extends StatelessWidget {
       elevation: 2,
       child: ListTile(
         contentPadding: EdgeInsets.symmetric(horizontal: 8.0),
-        leading: IconButton(
-          icon: Icon(Icons.settings),
-          onPressed: () => onSettingsPressed(device),
-        ),
+
         title: Text(deviceName),
         // subtitle: Text(device.device.id.id),
         // trailing: Text(device.rssi.toString()),
@@ -37,6 +34,7 @@ class DeviceListItem extends StatelessWidget {
             Text(device.rssi.toString()),
           ],
         ),
+
         trailing: SizedBox(
           width: 80,
           child: Button(

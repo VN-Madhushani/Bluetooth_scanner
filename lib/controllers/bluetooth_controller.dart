@@ -1,10 +1,10 @@
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:get/get.dart';
-import 'package:getting_started/screens/firstpg.dart';
-import 'package:getting_started/utils/utils.dart';
-import 'package:getting_started/widgets/devicehome.dart';
-import 'package:getting_started/models/common_data_response.dart';
-import 'package:getting_started/models/common_response.dart';
+import 'package:ble_Scanner/screens/firstpg.dart';
+import 'package:ble_Scanner/utils/utils.dart';
+import 'package:ble_Scanner/widgets/devicehome.dart';
+import 'package:ble_Scanner/models/common_data_response.dart';
+import 'package:ble_Scanner/models/common_response.dart';
 
 class BluetoothController extends GetxController {
   //FlutterBluePlus flutterBlue = FlutterBluePlus.instance;
@@ -14,6 +14,9 @@ class BluetoothController extends GetxController {
   RxBool isScanning = false.obs;
   RxBool isBluetoothOn = false.obs;
 
+  // Map to keep track of device connection states
+  //RxMap<String, bool> deviceConnectionStates = <String, bool>{}.obs;
+
   @override
   void onInit() {
     super.onInit();
@@ -22,7 +25,7 @@ class BluetoothController extends GetxController {
     FlutterBluePlus.adapterState.listen((BluetoothAdapterState state) {
       if (state == BluetoothAdapterState.on) {
         isBluetoothOn.value = true;
-        Get.to(() => Firstpg());
+        //Get.to(() => Firstpg());
       } else {
         isBluetoothOn.value = false;
       }
@@ -36,81 +39,33 @@ class BluetoothController extends GetxController {
         return;
       }
 
-      var subscription =
-          FlutterBluePlus.adapterState.listen((BluetoothAdapterState state) {
-        print(state);
-        if (state == BluetoothAdapterState.on) {
-          // usually start scanning, connecting, etc
-          //Get.to(() => Firstpg());
-        } else {
-          // show an error to the user, etc
-          print("Bluetooth is not on");
-        }
-      });
+      // var subscription =
+      //     FlutterBluePlus.adapterState.listen((BluetoothAdapterState state) {
+      //   print(state);
+      //   if (state == BluetoothAdapterState.on) {
+      //     // usually start scanning, connecting, etc
+      //     Get.to(() => Firstpg());
+      //   } else {
+      //     // show an error to the user, etc
+      //     print("Bluetooth is not on");
+      //   }
+      // });
 
       bool isOn = await FlutterBluePlus.isOn;
       isBluetoothOn.value = isOn;
 
       print("BLE status:**********");
       print(isOn);
-      subscription.cancel();
+
+      // if (isOn) {
+      //   Get.to(() => Firstpg());
+      // }
+
+      //subscription.cancel();
     } catch (e) {
       print("Error checking ble state:$e");
     }
   }
-
-  // Future<void> turnOnBluetooth() async {
-  //   try {
-  //     // Note: Turning Bluetooth on/off might require platform-specific code.
-  //     //await flutterBlue.turnOn();
-  //     isBluetoothOn.value = true;
-  //     print('Bluetooth turned on');
-  //     Get.to(() => Firstpg());
-  //   } catch (e) {
-  //     print('Error turning on Bluetooth: $e');
-  //   }
-  // }
-
-  // Future<void> turnOffBluetooth() async {
-  //   try {
-  //     // Note: Turning Bluetooth on/off might require platform-specific code.
-  //     isBluetoothOn.value = false;
-  //     print('Bluetooth turned off');
-  //   } catch (e) {
-  //     print('Error turning off Bluetooth: $e');
-  //   }
-  // }
-
-  // Future<void> checkBluetoothState() async {
-  //   bool isOn = await FlutterBluePlus.isOn;
-  //   isBluetoothOn.value = isOn;
-  // }
-
-  // void turnOnBluetooth() {
-  //   isBluetoothOn.value = true;
-  // }
-
-  // void turnOffBluetooth() {
-  //   isBluetoothOn.value = false;
-  // }
-
-  // Future<void> turnOn({int timeout = 60}) async {
-  //   try {
-  //     await flutterBlue.turnOn(); // This might need platform-specific code to actually work
-  //     isBluetoothOn.value = true;
-  //   } catch (e) {
-  //     print('Error turning on Bluetooth: $e');
-  //   }
-  // }
-
-  // Future<void> turnOffBluetooth() async {
-  //   try {
-  //     await flutterBlue.turnOff(); // This might need platform-specific code to actually work
-  //     isBluetoothOn.value = false;
-  //   } catch (e) {
-  //     print('Error turning off Bluetooth: $e');
-  //   }
-  // }
 
   Future scanDevices() async {
     print(isScanning.value);
@@ -130,6 +85,18 @@ class BluetoothController extends GetxController {
       (results) {
         if (results.isNotEmpty) {
           ScanResult r = results.last; // the most recently found device
+
+          // var waveTechDevices = results
+          //     .where((result) =>
+          //         result.advertisementData.advName != null &&
+          //         result.advertisementData.advName.startsWith('WaveTech'))
+          //     .toList();
+
+          // for (var device in waveTechDevices) {
+          //   print(
+          //       '${device.device.remoteId}: "${device.advertisementData.advName}" found!');
+          // }
+
           print(
               '${r.device.remoteId}: "${r.advertisementData.advName}" found!');
         }
@@ -139,7 +106,8 @@ class BluetoothController extends GetxController {
 
     print("Start scannning 2");
 
-    await FlutterBluePlus.startScan(timeout: const Duration(seconds: 10));
+    await FlutterBluePlus.startScan(
+        withKeywords: const ["WaveTech"], timeout: const Duration(seconds: 10));
     //await FlutterBluePlus.stopScan();
     // FlutterBluePlus.stopScan();
     isScanning.value = false;
@@ -156,6 +124,7 @@ class BluetoothController extends GetxController {
           device.connectionState.listen((BluetoothConnectionState state) async {
         if (state == BluetoothConnectionState.disconnected) {
           // Handle disconnection
+          //deviceConnectionStates[device.remoteId.toString()] = false;
           //print("${device.disconnectReasonCode} ${device.disconnectReasonDescription}");
           print("disconnection occur");
         }
@@ -168,15 +137,27 @@ class BluetoothController extends GetxController {
       await device.connect();
       print('Connected to the device');
 
+      //deviceConnectionStates[device.remoteId.toString()] = true;
+
       // Disconnect from the device when done
       //await device.disconnect();
       //print('Disconnected from the device');
 
       Get.to(() => DeviceHomePage(device: device));
 
-      subscription.cancel();
+      //subscription.cancel();
     } catch (e) {
       print('Error connecting to the device: $e');
+    }
+  }
+
+  Future<void> disconnectDevice(BluetoothDevice device) async {
+    try {
+      await device.disconnect();
+      print('Disconnected the device');
+      //Get.to(() => Firstpg());
+    } catch (e) {
+      print('Error disconnecting the device: $e');
     }
   }
 

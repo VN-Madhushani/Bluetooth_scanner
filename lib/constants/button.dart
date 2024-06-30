@@ -1,4 +1,4 @@
-import 'package:getting_started/constants/colors.dart';
+import 'package:ble_Scanner/constants/colors.dart';
 import 'package:flutter/material.dart';
 
 class Button extends StatelessWidget {
@@ -20,7 +20,10 @@ class Button extends StatelessWidget {
       ),
       child: TextButton(
         onPressed: press,
-        child: Text(label),
+        child: Text(
+          label,
+          style: TextStyle(color: Colors.white),
+        ),
       ),
     );
   }

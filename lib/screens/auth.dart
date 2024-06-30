@@ -5,123 +5,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_navigation/src/routes/default_transitions.dart';
-import 'package:getting_started/screens/blue_scan_anime.dart';
-import 'package:getting_started/screens/firstpg.dart';
-import 'package:getting_started/screens/bluetoothcontrol.dart';
+import 'package:ble_Scanner/screens/blue_scan_anime.dart';
+import 'package:ble_Scanner/screens/firstpg.dart';
+import 'package:ble_Scanner/screens/bluetoothcontrol.dart';
 import 'package:swipeable_button_flutter/swipablewidget.dart';
 import 'package:swipeable_button_flutter/swipebutton.dart';
 import 'package:page_transition/page_transition.dart';
-import 'package:getting_started/screens/home.dart';
-import 'package:getting_started/controllers/bluetooth_controller.dart';
-
-// class AuthScreen extends StatelessWidget {
-//   const AuthScreen({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       backgroundColor: Colors.white,
-//       body: SafeArea(
-//           child: Center(
-//         child: Padding(
-//           padding: const EdgeInsets.symmetric(vertical: 50.0),
-//           child: Column(
-//             mainAxisAlignment: MainAxisAlignment.center,
-//             children: [
-//               Text(
-//                 "Testing gigs",
-//                 style: TextStyle(
-//                     fontSize: 45,
-//                     fontWeight: FontWeight.bold,
-//                     color: primaryColor),
-//               ),
-//               Text(
-//                 "Connect with the devices",
-//                 style: TextStyle(color: Colors.grey),
-//               ),
-//               Expanded(
-//                 child: Image(
-//                   image: AssetImage("images/wavetec.png"),
-//                 ),
-//               ),
-//               Button(
-//                   label: "START",
-//                   press: () {
-//                     Navigator.push(context,
-//                         MaterialPageRoute(builder: (context) => Firstpg()));
-//                   }),
-//             ],
-//           ),
-//         ),
-//       )),
-//     );
-//   }
-// }
-
-// class AuthScreen extends StatelessWidget {
-//   const AuthScreen({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       body: Stack(
-//         children: [
-//           // Background image
-//           Positioned.fill(
-//             child: Image.asset(
-//               "images/bk1.png",
-//               fit: BoxFit.cover,
-//             ),
-//           ),
-//           SafeArea(
-//             child: Center(
-//               child: Padding(
-//                 padding: const EdgeInsets.symmetric(vertical: 50.0),
-//                 child: Column(
-//                   mainAxisAlignment: MainAxisAlignment.center,
-//                   children: [
-//                     Spacer(),
-//                     //Image.asset("images/wavenobg.jpg", width: 150),
-//                     SizedBox(height: 20),
-//                     Text(
-//                       "Test gigs",
-//                       style: TextStyle(
-//                         fontSize: 40,
-//                         fontWeight: FontWeight.bold,
-//                         color: Colors.white,
-//                       ),
-//                     ),
-//                     Spacer(),
-//                     ElevatedButton(
-//                       onPressed: () {
-//                         Navigator.push(
-//                           context,
-//                           MaterialPageRoute(builder: (context) => Firstpg()),
-//                         );
-//                       },
-//                       child: Text("NEXT"),
-//                       style: ElevatedButton.styleFrom(
-//                         backgroundColor: Colors.blueAccent,
-//                         textStyle: TextStyle(color: Colors.white, fontSize: 16),
-//                         padding:
-//                             EdgeInsets.symmetric(horizontal: 50, vertical: 15),
-//                         //textStyle: TextStyle(fontSize: 16),
-//                       ),
-//                     ),
-//                     Spacer(),
-//                     //Image.asset("images/LogoSy.jpg", width: 150),
-//                   ],
-//                 ),
-//               ),
-//             ),
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// }
-
-//*************************8 */
+import 'package:ble_Scanner/screens/home.dart';
+import 'package:ble_Scanner/controllers/bluetooth_controller.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
@@ -161,6 +53,7 @@ class _AuthScreenState extends State<AuthScreen> {
                     Image.asset(
                       "images/removebg.png",
                       width: 300,
+                      //color: Color(0xFFc2ebaf),
                       //alignment:,
                       //height: 200,
                     ),
@@ -168,25 +61,39 @@ class _AuthScreenState extends State<AuthScreen> {
                     Text(
                       "Test gigs",
                       style: TextStyle(
-                        fontSize: 40,
+                        fontSize: 50,
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
                       ),
+                      // style: GoogleFonts.lato(
+
+                      //   textStyle: Theme.of(context).textTheme.displayLarge,
+                      //   fontSize: 48,
+                      //   fontWeight: FontWeight.w700,
+                      //   fontStyle: FontStyle.italic,
+                      // ),
                     ),
                     Spacer(),
                     ElevatedButton(
+                      // onPressed: () {
+                      //   Get.to(() => BlueControlpg());
+                      // },
                       onPressed: () {
-                        // Navigator.push(
-                        //   context,
-                        //MaterialPageRoute(builder: (context) => Firstpg()),
-                        //MaterialPageRoute(builder: (context) => BlueControlpg()),
-
-                        //);
-                        Get.to(() => BlueControlpg());
+                        Navigator.push(
+                          context,
+                          PageTransition(
+                            child: BlueControlpg(),
+                            type: PageTransitionType.rightToLeft,
+                            duration: Duration(milliseconds: 500),
+                            reverseDuration: Duration(milliseconds: 500),
+                            //curve: Curves.ease))
+                          ),
+                        );
                       },
-                      child: Text("NEXT"),
+                      child: Text("START"),
                       style: ElevatedButton.styleFrom(
-                        //backgroundColor: Colors.blueAccent,
+                        //backgroundColor: Color.fromARGB(255, 3, 23, 56),
+                        //foregroundColor: Colors.white,
                         textStyle: TextStyle(
                             color: Colors.white,
                             fontSize: 20,
@@ -197,49 +104,43 @@ class _AuthScreenState extends State<AuthScreen> {
                       ),
                     ),
                     Spacer(),
-                    //Image.asset("images/LogoSy.jpg", width: 150),
+                    //SizedBox(height: 90),
 
-                    //********************* */
-                    SwipeButton(
-                      text: "Slide",
-                      onSwipeCallback: () async {
-                        await Navigator.push(
-                          context,
-                          PageTransition(
-                            child: const Homepg(),
-                            type: PageTransitionType.fade,
-                          ),
-                        );
-                        print("navigated");
-                      },
-                    ),
-
-                    // SwipeableButtonView(
-                    //   buttonText: 'Slide to start',
-                    //   buttontextStyle:
-                    //       const TextStyle(fontSize: 25, color: Colors.white),
-                    //   buttonWidget: const Icon(Icons.arrow_forward_ios_rounded,
-                    //       color: Colors.grey),
-                    //   activeColor: const Color(0xFF009C41),
-                    //   onWaitingProcess: () {
-                    //     Future.delayed(const Duration(milliseconds: 200), () {
-                    //       setState(() {
-                    //         isFinished = true;
-                    //       });
-                    //     });
-                    //   },
-                    //   isFinished: isFinished,
-                    //   onFinish: () async {
-                    //     await Navigator.push(
-                    //         context,
-                    //         PageTransition(
-                    //             type: PageTransitionType.fade,
-                    //             child: const Homepg()));
-
-                    //     setState(() => isFinished = false);
-                    //   },
+                    // Row(
+                    //   children: [
+                    //     Text(
+                    //       "Powered by",
+                    //       //textAlign: TextAlign.right,
+                    //       style: TextStyle(
+                    //         color: Colors.white,
+                    //         fontSize: 30,
+                    //         fontWeight: FontWeight.bold,
+                    //       ),
+                    //     ),
+                    //   ],
                     // ),
-                    //************************** */
+
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Text(
+                          "Powered by",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        //SizedBox(width: 5),
+                        Image.asset(
+                          'images/LogoSynobg.png', // Replace with your logo image path
+                          width: 100, // Adjust the width as needed
+                          height: 100,
+                          //color: , // Adjust the height as needed
+                        ),
+                        Text("    "),
+                      ],
+                    ),
                   ],
                 ),
               ),

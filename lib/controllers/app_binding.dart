@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:getting_started/controllers/todo_controller.dart';
+import 'package:ble_Scanner/controllers/todo_controller.dart';
 
 class AppBinding extends Bindings {
   @override

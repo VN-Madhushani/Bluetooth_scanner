@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:getting_started/constants/colors.dart';
-import 'package:getting_started/models/todo.dart';
-import 'package:getting_started/widgets/todo_item.dart';
+import 'package:ble_Scanner/constants/colors.dart';
+import 'package:ble_Scanner/models/todo.dart';
+import 'package:ble_Scanner/widgets/todo_item.dart';
 
 class Home extends StatefulWidget {
   Home({Key? key}) : super(key: key);

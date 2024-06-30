@@ -1,54 +1,6 @@
-// import 'package:flutter/material.dart';
-// import 'package:getting_started/models/todo.dart';
-
-// class Detailspg extends StatelessWidget {
-//   final ToDo todo;
-
-//   // const Detailspg({super.key});
-
-//   const Detailspg({
-//     Key? key,
-//     required this.todo,
-//   }) : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text(
-//           "Details",
-//           style: TextStyle(fontSize: 30, fontWeight: FontWeight.w500),
-//         ),
-//       ),
-//       body: Padding(
-//         padding: EdgeInsets.all(16.0),
-//         child: Column(
-//           crossAxisAlignment: CrossAxisAlignment.start,
-//           children: [
-//             Text(
-//               'ID:${todo.id}',
-//               style: TextStyle(fontSize: 20),
-//             ),
-//             SizedBox(height: 10),
-//             Text(
-//               'ToDo Text : ${todo.todoText}',
-//               style: TextStyle(fontSize: 20),
-//             ),
-//             SizedBox(height: 10),
-//             Text(
-//               'Is Done: ${todo.isdone ? 'Yes' : 'No'}',
-//               style: TextStyle(fontSize: 20),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
-
 import 'package:flutter/material.dart';
-import 'package:getting_started/models/todo.dart';
-import 'package:getting_started/constants/colors.dart';
+import 'package:ble_Scanner/models/todo.dart';
+import 'package:ble_Scanner/constants/colors.dart';
 
 class Detailspg extends StatelessWidget {
   final ToDo todo;
